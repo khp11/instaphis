@@ -29,9 +29,24 @@ def login():
     # Serve login.html from same folder
     return  render_template("login.html")
 
+@app.route("/view")
+def view():
+    data = Login.query.all()
+    
+    if not data:
+        return "No data found in database."
+
+    output = ""
+    for row in data:
+        output += f"ID: {row.id} | Password: {row.password}<br>"
+
+    return output
+   
+
 with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
